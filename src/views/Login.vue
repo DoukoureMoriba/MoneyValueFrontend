@@ -1,27 +1,64 @@
 <script>
-
+    export default {
+        data() {
+            return {
+                email : '',
+                password : '',
+            }
+        },
+        methods: {
+            //la fonction login me permet d'envoyer des informations de mon formulaire afin de connecter l'amdin
+            async login(){
+                var url = 'http://127.0.0.1:8000/api/login';  
+                var bodyContent = JSON.stringify({"email":this.email,"password":this.password});
+            fetch(url, {
+                    method:"POST",
+                    headers:{'Content-Type':'application/json'
+                        },
+                    body:bodyContent,
+                })
+                .then(Response =>{
+                return Response.json();
+                 })
+                  // Res me permet de lire les informations renvoyer par mon json depuis l'api.
+                .then(res=> {
+                    console.log(res);
+                if (res.status=='Done') {
+                    alert(res.message);
+                    this.$router.push('/Dashboard');//Redirection vers la page du Dashboard
+                } else {
+                    alert('Impossible de vous connecter');
+                }
+                })
+                .catch(error => {
+                    console.error(error);
+                })   
+            },
+        }
+    }
 </script>
+
 
 <template>
 
 <div class="login-box">
-  <h2>Login</h2>
-  <form>
+  <h2>Connexion Admin</h2>
+  <form @submit.prevent="login()"><!--retire l'action par defaut que le formulaire effectue-->
     <div class="user-box">
-      <input type="text" name="" required="">
-      <label>Username</label>
+      <input v-model="email" type="email" name="email" required="" placeholder="email">
+      <label></label>
     </div>
     <div class="user-box">
-      <input type="password" name="" required="">
-      <label>Password</label>
+      <input  v-model="password" type="password" name="password" required="" placeholder="password">
+      <label></label>
     </div>
-    <a href="#">
+    <button type="submit">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-      Submit
-    </a>
+      Envoyez
+    </button>
   </form>
 </div>
 
@@ -93,7 +130,8 @@ body {
   font-size: 12px;
 }
 
-.login-box form a {
+.login-box form button {
+    background-color: transparent;
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -107,7 +145,7 @@ body {
   letter-spacing: 4px
 }
 
-.login-box a:hover {
+.login-box button:hover {
   background: #03e9f4;
   color: #fff;
   border-radius: 5px;
@@ -117,12 +155,12 @@ body {
               0 0 100px #03e9f4;
 }
 
-.login-box a span {
+.login-box button span {
   position: absolute;
   display: block;
 }
 
-.login-box a span:nth-child(1) {
+.login-box button span:nth-child(1) {
   top: 0;
   left: -100%;
   width: 100%;
@@ -140,7 +178,7 @@ body {
   }
 }
 
-.login-box a span:nth-child(2) {
+.login-box button span:nth-child(2) {
   top: -100%;
   right: 0;
   width: 2px;
@@ -159,7 +197,7 @@ body {
   }
 }
 
-.login-box a span:nth-child(3) {
+.login-box button span:nth-child(3) {
   bottom: 0;
   right: -100%;
   width: 100%;
@@ -178,7 +216,7 @@ body {
   }
 }
 
-.login-box a span:nth-child(4) {
+.login-box button span:nth-child(4) {
   bottom: -100%;
   left: 0;
   width: 2px;
