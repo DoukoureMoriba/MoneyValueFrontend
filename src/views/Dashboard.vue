@@ -5,7 +5,11 @@
                 pair:[],
             }
         },
+
+                
         methods: {
+
+            //Function pour récuperer la list des pairs
             async getPairs() {
                 var url = 'http://127.0.0.1:8000/api/list_pairs';  
             fetch(url, {
@@ -26,15 +30,67 @@
                 .catch(error => {
                     console.error(error);
                 })   
-            }
-        },
-        // Exécute une instruction lorsque la page est crée. 
-        mounted() {
-            this.getPairs();
-        },
-    }
-</script>
+            },
 
+                // Function pour supprimer la list d'une pair
+                async deletePair(pairId) {
+            var url = `http://127.0.0.1:8000/api/delete_pairs/${pairId}`;
+            fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            })
+            .then((Response) => {
+                return Response.json();
+            })
+            .then((res) => {
+                console.log(res);
+                if (res.status === 'Done') {
+                alert('Paire supprimée avec succès');
+                // Mettez à jour la liste des paires après la suppression
+                this.getPairs();
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+        },
+
+            
+            //Function pour la déconnexion de l'admin
+            async logout() {
+            var url = 'http://127.0.0.1:8000/api/logout';
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            })
+                .then((Response) => {
+                return Response.json();
+                })
+                .then((res) => {
+                console.log(res);
+                if (res.status == 'Done') {
+                    alert('Utilisateur déconnecté');
+                    this.$router.push('/'); // Redirection vers la route "welcome.vue"
+                }
+                })
+                .catch((error) => {
+                console.error(error);
+                });
+                    },
+                },
+
+        
+            // Exécute une instruction lorsque la page est crée. 
+            mounted() { 
+                this.getPairs();
+        },
+    };
+</script>
 
 
 <template>
@@ -46,7 +102,7 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-            <button>Se deconnecter</button>
+            <button @click="logout()">Se deconnecter</button>
         </ul>
         </div>
     </div>
@@ -56,13 +112,14 @@
 <!---Le tableau-->
  <br> <section>
     <div>
+        <button>Ajouter</button> <br> <br>
         <table class="table">
-  <thead>
+  <thead class="tableau-style">
     <tr>
       <th scope="col">id</th>
       <th scope="col">Monnaie sources</th>
       <th scope="col">Monnaie cible</th>
-      <th scope="col">Taux convers</th>
+      <th scope="col">Taux conversion</th>
       <th scope="col">Nombre de requête</th>
       <th scope="col">Action</th>
     </tr>
@@ -75,8 +132,8 @@
       <td>{{ p.conversion_rates }}</td>
       <td>{{ p.count }}</td>
       <td>
-         <button><i class="fa-solid fa-pen-to-square"></i>Modifier</button> 
-         <button><i class="fa-solid fa-trash"></i>Supprimer</button> 
+         <button><i class="fa-solid fa-pen-to-square"></i> Modifier</button> 
+         <button @click="deletePair(p.id)"><i class="fa-solid fa-trash"></i> Supprimer</button> 
     </td>
     </tr>
   </tbody>
@@ -90,4 +147,45 @@
 
 <style>
 
+    ::before, ::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body{
+        height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .tableau-style {
+        border-collapse: collapse;
+        min-width: 400px;
+        width: auto;
+        box-shadow: 0 10px rgba(0,0,0,0.15);
+        margin: 100px;
+        border:5px solid midnightblue;
+    }
+
+    thead tr {
+        background-color: midnightblue;
+        color:#fff;
+        text-align: left;
+    }
+    
+    th,td {
+        padding: 15px 20px;
+    }
+
+    tbody tr, td, th {
+        border:5px solid #ddd;
+    }
+
+    tbody tr:nth-child(event) {
+        background-color: #f3f3f3;
+    }
+
+   
+       
+    
 </style>
