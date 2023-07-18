@@ -3,9 +3,7 @@ export default {
   data() {
     return {
       money: [],
-      sourceMoney: [],
-      targetMoney: [],
-      conversion_rates: [],
+      codeCurrency: '',
     };
   },
   props: ["id"],
@@ -19,11 +17,10 @@ export default {
         .then((Response) => {
           return Response.json();
         })
-        // Res me permet de lire les informations renvoyer par mon json depuis l'api.
         .then((res) => {
           console.log(res);
           if (res.status == "Done") {
-            this.money = res.data; // Recuperation de toute les infos dans la table pair depuis l'api.
+            this.money = res.data;
           }
         })
         .catch((error) => {
@@ -31,8 +28,8 @@ export default {
         });
     },
 
-    async getPair(id) {
-      var url = `http://127.0.0.1:8000/api/get_pair/${id}`;
+    async getCurrency(id) {
+      var url = `http://127.0.0.1:8000/api/get_money/${id}`;
       fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -40,14 +37,10 @@ export default {
         .then((Response) => {
           return Response.json();
         })
-        // Res me permet de lire les informations renvoyer par mon json depuis l'api.
         .then((res) => {
           console.log(res);
           if (res.status == "Done") {
-            //On recupere les infos de la pair
-            this.sourceMoney = res.data.id_sources;
-            this.targetMoney = res.data.id_target;
-            this.conversion_rates = res.data.conversion_rates;
+            this.codeCurrency = res.data.code_currency;
           }
         })
         .catch((error) => {
@@ -55,26 +48,23 @@ export default {
         });
     },
 
-    async updatePair(id) {
-      var url = `http://127.0.0.1:8000/api/udpate_pairs/${id}`;
+    async updateCurrency(id) {
+      var url = `http://127.0.0.1:8000/api/udpate_money/${id}`;
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_sources: this.sourceMoney,
-          id_target: this.targetMoney,
-          conversion_rates: this.conversion_rates,
+          code_currency: this.codeCurrency,
         }),
       })
         .then((Response) => {
           return Response.json();
         })
-        // Res me permet de lire les informations renvoyer par mon json depuis l'api.
         .then((res) => {
           console.log(res);
           if (res.status == "Done") {
-            alert("La pair a été modifier avec succes");
-            this.$router.push("/Dashboard"); //Redirection vers la page du Dashboard
+            alert("La monnaie a été modifiée avec succès");
+            this.$router.push("/Dashboard_money");
           }
         })
         .catch((error) => {
@@ -85,44 +75,32 @@ export default {
   mounted() {
     this.getMoney();
     if (this.id) {
-      this.getPair(this.id);
+      this.getCurrency(this.id);
     }
   },
 };
 </script>
 
 <template>
-<div class="pairclass"><center> 
-  <h1>Modification de la paire</h1>
-  <label for="" class="label">Monnaie source</label> <br />
-  <select v-model="sourceMoney">
-    <option v-for="m in money" :key="m.id" :value="m.id">
-      {{ m.code_currency }}
-    </option></select
-  ><br /><br />
-  <label for="" class="label">Monnaie cible</label><br />
-  <select v-model="targetMoney">
-    <option v-for="m in money" :key="m.id" :value="m.id">
-      {{ m.code_currency }}
-    </option>
-  </select>
-  <br /><br />
-
-  <p class="taux">taux de conversion</p>
-  <input type="number" step="any" v-model="conversion_rates" />
-  <br /><br />
-  <button @click="updatePair(this.id)">Enregistrer</button>
-  </center></div>
+<div class="pairclass"> <center> 
+  <h1>Modification de la monnaie</h1>
+  <br> <br>
+  <p class="taux">Saisir le code de la monnaie</p>
+  <input type="text" v-model="codeCurrency" placeholder="Code Currency">
+  <button @click="updateCurrency(this.id)">Enregistrer</button>
+  </center>
+</div>
 </template>
 
 <style>
+/* Vos styles CSS ici */
+</style>
 
 
+<style>
 .pairclass {
-    padding: 50px;
-    
-
-} 
+  padding: 50px;
+}
 
 html {
   height: 100%;
@@ -131,7 +109,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background-color:rgb(86, 57, 113) ;
+  background-color: rgb(86, 57, 113);
   color: #fff;
 }
 
@@ -150,12 +128,12 @@ select {
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
-  border-radius: 10px ;
+  border-radius: 10px;
   border: 1px solid #fff;
 }
 
 button {
-  border-radius:10px;
+  border-radius: 10px;
   width: 150px;
 }
 button:hover {
@@ -164,8 +142,7 @@ button:hover {
   transition: 1.2s;
   border-radius: 20px;
 }
-
 input {
-  border-radius:10px;
+  border-radius: 10px;
 }
 </style>

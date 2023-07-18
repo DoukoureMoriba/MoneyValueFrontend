@@ -1,77 +1,90 @@
 <script>
-    export default {
-        data() {
-            return {
-                email : '',
-                password : '',
-            }
-        },
-        methods: {
-            //la fonction login me permet d'envoyer des informations de mon formulaire afin de connecter l'amdin
-            async login(){
-                var url = 'http://127.0.0.1:8000/api/login';  
-                var bodyContent = JSON.stringify({"email":this.email,"password":this.password});
-            fetch(url, {
-                    method:"POST",
-                    headers:{'Content-Type':'application/json'
-                        },
-                    body:bodyContent,
-                })
-                .then(Response =>{
-                return Response.json();
-                 })
-                  // Res me permet de lire les informations renvoyer par mon json depuis l'api.
-                .then(res=> {
-                    console.log(res);
-                if (res.status=='Done') {
-                    alert(res.message);
-                    this.$router.push('/Dashboard');//Redirection vers la page du Dashboard
-                } else {
-                    alert('Impossible de vous connecter');
-                }
-                })
-                .catch(error => {
-                    console.error(error);
-                })   
-            },
-        }
-    }
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    //la fonction login me permet d'envoyer des informations de mon formulaire afin de connecter l'amdin
+    async login() {
+      var url = "http://127.0.0.1:8000/api/login";
+      var bodyContent = JSON.stringify({
+        email: this.email,
+        password: this.password,
+      });
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: bodyContent,
+      })
+        .then((Response) => {
+          return Response.json();
+        })
+        // Res me permet de lire les informations renvoyer par mon json depuis l'api.
+        .then((res) => {
+          console.log(res);
+          if (res.status == "Done") {
+            alert(res.message);
+            this.$router.push("/Dashboard"); //Redirection vers la page du Dashboard
+          } else {
+            alert("Impossible de vous connecter");
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+  },
+};
 </script>
 
 
 <template>
-
-<div class="login-box">
-  <h2>Connexion Admin</h2>
-  <form @submit.prevent="login()"><!--retire l'action par defaut que le formulaire effectue-->
-    <div class="user-box">
-      <input v-model="email" type="email" name="email" required="" placeholder="email">
-      <label></label>
-    </div>
-    <div class="user-box">
-      <input  v-model="password" type="password" name="password" required="" placeholder="password">
-      <label></label>
-    </div>
-    <button type="submit">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Envoyez
-    </button>
-  </form>
-</div>
-
+  <div class="login-box">
+    <h2>Connexion Admin</h2>
+    <form @submit.prevent="login()">
+      <!--retire l'action par defaut que le formulaire effectue-->
+      <div class="user-box">
+        <input
+          v-model="email"
+          type="email"
+          name="email"
+          required=""
+          placeholder="email"
+        />
+        <label></label>
+      </div>
+      <div class="user-box">
+        <input
+          v-model="password"
+          type="password"
+          name="password"
+          required=""
+          placeholder="password"
+        />
+        <label></label>
+      </div>
+      <button type="submit">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Envoyez
+      </button>
+    </form>
+  </div>
 </template>
 
 <style>
-
 html {
   height: 100%;
 }
 body {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
 }
@@ -83,9 +96,9 @@ body {
   width: 400px;
   padding: 40px;
   transform: translate(-50%, -50%);
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
-  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
 }
 
@@ -113,13 +126,13 @@ body {
 }
 .login-box .user-box label {
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
   padding: 10px 0;
   font-size: 16px;
   color: #fff;
   pointer-events: none;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .login-box .user-box input:focus ~ label,
@@ -131,7 +144,7 @@ body {
 }
 
 .login-box form button {
-    background-color: transparent;
+  background-color: transparent;
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -140,19 +153,17 @@ body {
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
-  transition: .5s;
+  transition: 0.5s;
   margin-top: 40px;
-  letter-spacing: 4px
+  letter-spacing: 4px;
 }
 
 .login-box button:hover {
   background: #03e9f4;
   color: #fff;
   border-radius: 5px;
-  box-shadow: 0 0 5px #03e9f4,
-              0 0 25px #03e9f4,
-              0 0 50px #03e9f4,
-              0 0 100px #03e9f4;
+  box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4,
+    0 0 100px #03e9f4;
 }
 
 .login-box button span {
@@ -173,7 +184,8 @@ body {
   0% {
     left: -100%;
   }
-  50%,100% {
+  50%,
+  100% {
     left: 100%;
   }
 }
@@ -185,14 +197,15 @@ body {
   height: 100%;
   background: linear-gradient(180deg, transparent, #03e9f4);
   animation: btn-anim2 1s linear infinite;
-  animation-delay: .25s
+  animation-delay: 0.25s;
 }
 
 @keyframes btn-anim2 {
   0% {
     top: -100%;
   }
-  50%,100% {
+  50%,
+  100% {
     top: 100%;
   }
 }
@@ -204,14 +217,15 @@ body {
   height: 2px;
   background: linear-gradient(270deg, transparent, #03e9f4);
   animation: btn-anim3 1s linear infinite;
-  animation-delay: .5s
+  animation-delay: 0.5s;
 }
 
 @keyframes btn-anim3 {
   0% {
     right: -100%;
   }
-  50%,100% {
+  50%,
+  100% {
     right: 100%;
   }
 }
@@ -223,17 +237,16 @@ body {
   height: 100%;
   background: linear-gradient(360deg, transparent, #03e9f4);
   animation: btn-anim4 1s linear infinite;
-  animation-delay: .75s
+  animation-delay: 0.75s;
 }
 
 @keyframes btn-anim4 {
   0% {
     bottom: -100%;
   }
-  50%,100% {
+  50%,
+  100% {
     bottom: 100%;
   }
 }
-
-
 </style>

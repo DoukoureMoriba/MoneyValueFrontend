@@ -26,6 +26,32 @@ const router = createRouter({
       name: 'Add_pair_dashboard',
       component: () => import('../views/Add_pair_dashboard.vue'),
     },
+
+    {
+      path: '/Edit_pair_dashboard/:id',
+      name: 'Edit_pair_dashboard',
+      component: () => import('../views/Edit_pair_dashboard.vue'),
+      props:true
+    },
+
+    {
+      path: '/Dashboard_money',
+      name: 'Dashboard_money',
+      component: () => import('../views/Dashboard_money.vue'),
+    },
+
+    {
+      path: '/Add_money_dashboard',
+      name: 'Add_money_dashboard',
+      component: () => import('../views/Add_money_dashboard.vue'),
+    },
+
+    {
+      path: '/Edit_money_dashboard/:id',
+      name: 'Edit_money_dashboard',
+      component: () => import('../views/Edit_money_dashboard.vue'),
+      props:true
+    },
   ]
 
 })

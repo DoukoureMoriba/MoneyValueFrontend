@@ -2,14 +2,13 @@
 export default {
   data() {
     return {
-      pair: [],
+      money: [],
     };
   },
 
   methods: {
-    //Function pour récuperer la list des pairs
-    async getPairs() {
-      var url = "http://127.0.0.1:8000/api/list_pairs";
+    async getMoney() {
+      var url = "http://127.0.0.1:8000/api/list_currency";
       fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -21,7 +20,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status == "Done") {
-            this.pair = res.data; // Recuperation de toute les infos dans la table pair depuis l'api.
+            this.money = res.data; // Recuperation de toute les infos dans la table monnaie depuis l'api.
           }
         })
         .catch((error) => {
@@ -29,9 +28,9 @@ export default {
         });
     },
 
-    // Function pour supprimer la list d'une pair
-    async deletePair(pairId) {
-      var url = `http://127.0.0.1:8000/api/delete_pairs/${pairId}`;
+    // Function pour supprimer la list d'une monnaie
+    async deleteMoney(moneyId) {
+      var url = `http://127.0.0.1:8000/api/delete_money/${moneyId}`;
       fetch(url, {
         method: "DELETE",
         headers: {
@@ -44,17 +43,16 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.status === "Done") {
-            alert("Paire supprimée avec succès");
+            alert("Monnaie supprimée avec succès");
             window.location.reload();
-            // Mettez à jour la liste des paires après la suppression
-            this.getPairs();
+            // Mettez à jour la liste des Monnaies après la suppression
+            this.getMoney();
           }
         })
         .catch((error) => {
           console.error(error);
         });
     },
-
     //Function pour la déconnexion de l'admin
     async logout() {
       var url = "http://127.0.0.1:8000/api/logout";
@@ -79,14 +77,11 @@ export default {
         });
     },
   },
-
-  // Exécute une instruction lorsque la page est crée.
   mounted() {
-    this.getPairs();
+    this.getMoney();
   },
 };
 </script>
-
 
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -108,11 +103,8 @@ export default {
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav m-auto mb-lg-0">
           <li class="nav-item">
-            <a
-              href="Dashboard_money"
-              class="nav-link active"
-              aria-current="page"
-              >Dashboard Monnaie</a
+            <a href="Dashboard" class="nav-link active" aria-current="page"
+              >Dashboard Paire</a
             >
           </li>
         </ul>
@@ -125,39 +117,36 @@ export default {
 
   <!---Le tableau-->
   <br />
-<center> <h1>Dashboard pour les paires</h1> </center>
+  <center><h1>Dashboard pour les Monnaies</h1></center>
+
   <section>
     <div>
-      <RouterLink to="/Add_pair_dashboard"
-        ><button class="btn">Ajouter</button></RouterLink
+      <RouterLink to="/Add_money_dashboard">
+        <button class="btn">Ajouter</button> </RouterLink
       ><br /><br />
       <table class="table">
         <thead class="tableau-style">
           <tr>
             <th scope="col">id</th>
-            <th scope="col">Monnaie sources</th>
-            <th scope="col">Monnaie cible</th>
-            <th scope="col">Taux conversion</th>
-            <th scope="col">Nombre de requête</th>
+            <th scope="col">Code de la monnaie</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="p in pair" :key="p.id">
-            <!--La boucle parcour mon tableau afin de recuperer tout les elements de la table pair.-->
-            <th scope="row">{{ p.id }}</th>
-            <td :id="p.id_sources">{{ p.currency_sources }}</td>
-            <td :id="p.id_target">{{ p.currency_target }}</td>
-            <td>{{ p.conversion_rates }}</td>
-            <td>{{ p.count }}</td>
+          <tr v-for="m in money" :key="m.id">
+            <th scope="row">{{ m.id }}</th>
             <td>
-              <RouterLink :to="`/Edit_pair_dashboard/${p.id}`"
-                ><button class="btn">
-                  <i class="fa-solid fa-pen-to-square"></i> Modifier
-                  </button></RouterLink
-                >
-              <button @click="deletePair(p.id)" class="btn" id="delete">
-                <i class="fa-solid fa-trash"></i> Supprimer
+              {{ m.code_currency }}
+            </td>
+            <td>
+              <RouterLink :to="`/Edit_money_dashboard/${m.id}`">
+                <button class="btn">
+                  <i class="fa-solid fa-pen-to-square"></i>Modifier
+                </button></RouterLink
+              >
+
+              <button class="btn" id="delete" @click="deleteMoney(m.id)">
+                <i class="fa-solid fa-trash"></i>Supprimer
               </button>
             </td>
           </tr>
@@ -168,7 +157,6 @@ export default {
 </template>
 
 <style>
-
 ::before,
 ::after {
   box-sizing: border-box;
@@ -180,7 +168,6 @@ body {
   height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
 }
-
 
 .tableau-style {
   border-collapse: collapse;
@@ -226,18 +213,16 @@ tbody tr:nth-child(event) {
   border-radius: 20px;
 }
 
-#delete:hover{
-     background-color: red;
-  opacity: 1;
-  transition: 1.1s;
-  border-radius: 20px;
-}
-
 ul li {
   border: 2px transparent red;
   border-radius: 20px;
 }
-
+#delete:hover {
+  background-color: red;
+  opacity: 1;
+  transition: 1.1s;
+  border-radius: 20px;
+}
 ul li :hover {
   background-color: aquamarine;
   opacity: 1;
