@@ -11,6 +11,7 @@ export default {
       show_amount:false,
     };
   },
+
   methods: {
     async getMoney() {
       var url = "http://127.0.0.1:8000/api/list_currency";
@@ -120,12 +121,14 @@ export default {
   <section class="section_money">
     <br />
 
-    <center><h2>Convertisseur de devise MoneyValue</h2></center>
+    
 
     <div>
-      <p>Montant</p>
-      <input type="number" v-model="value_amount" name="" id="" />
-      <label for=""> De </label>
+      <center>
+      <h2>Convertisseur de devise MoneyValue</h2>
+      <p>Rentrez votre montant</p>
+      <input type="number" v-model="value_amount" name="" id="" placeholder="Montant exemple 15000" />
+      <label for="">&ensp; De &ensp;</label>
       <select v-model="sourceMoney">
         <option v-for="m in money" :key="m.id" :value="m.id">
           {{ m.code_currency }}
@@ -136,25 +139,55 @@ export default {
         <option v-for="m in money" :key="m.id" :value="m.id">
           {{ m.code_currency }}
         </option>
-      </select>
-      <button @click="getPairId">Convertissez</button>
-    </div>
+      </select> &ensp;
+      <button @click="getPairId">Convertissez</button> 
+       
     <p v-if="show_amount">Le montant est : {{ result }}</p>
+    </center>
+    </div>
   </section>
 </template>
 
 <style>
+
+html {
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  background-color: midnightblue;
+}
+select {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  color: #fff;
+}
+button {
+  border-radius: 10px;
+  width: 150px;
+}
+button:hover {
+  background-color: aquamarine;
+  opacity: 1;
+  transition: 1.2s;
+  border-radius: 20px;
+}
 .btn {
   padding: 5px;
   margin: 0px 3px;
   text-decoration: none;
   border: 1px solid grey;
 }
-
 .btn:hover {
   background-color: aquamarine;
   opacity: 1;
   transition: 1.1s;
   border-radius: 20px;
+}
+input {
+  border-radius: 10px;
 }
 </style>

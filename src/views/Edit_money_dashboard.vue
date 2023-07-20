@@ -92,12 +92,10 @@ export default {
 </div>
 </template>
 
-<style>
-/* Vos styles CSS ici */
-</style>
 
 
 <style>
+
 .pairclass {
   padding: 50px;
 }
@@ -145,4 +143,5 @@ button:hover {
 input {
   border-radius: 10px;
 }
+
 </style>
