@@ -140,7 +140,7 @@ export default {
             </td>
             <td>
               <RouterLink :to="`/Edit_money_dashboard/${m.id}`">
-                <button class="btn">
+                <button class="btn" id="edit">
                   <i class="fa-solid fa-pen-to-square"></i>Modifier
                 </button></RouterLink
               >
@@ -206,9 +206,21 @@ tbody tr:nth-child(event) {
   border: 1px solid grey;
 }
 
+#edit {
+  padding: 5px;
+  margin: 0px 3px;
+  text-decoration: none;
+  background-color: rgb(90, 90, 241);
+  border: 1px solid grey;
+}
+#edit:hover {
+  color: #fff;
+  background-color: blue;
+}
+
 .btn:hover {
   background-color: aquamarine;
-  opacity: 1;
+  opacity: 3;
   transition: 1.1s;
   border-radius: 20px;
 }
@@ -217,9 +229,17 @@ ul li {
   border: 2px transparent red;
   border-radius: 20px;
 }
+#delete {
+  padding: 5px;
+  margin: 0px 3px;
+  text-decoration: none;
+  background-color: rgb(237, 71, 71);
+  border: 1px solid grey;
+}
 #delete:hover {
   background-color: red;
-  opacity: 1;
+  color: #fff;
+  opacity: 3;
   transition: 1.1s;
   border-radius: 20px;
 }

@@ -158,7 +158,11 @@ body {
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: #fff;
-  background-color: midnightblue;
+  background-color: #1B2B41;
+}
+.section_money {
+  padding: 20px;
+  margin: 20px;
 }
 select {
   background: rgba(0, 0, 0, 0.5);

@@ -3,7 +3,7 @@ export default {
   data() {
     return {
       money: [],
-      codeCurrency: '',
+      codeCurrency: "",
     };
   },
   props: ["id"],
@@ -82,20 +82,21 @@ export default {
 </script>
 
 <template>
-<div class="pairclass"> <center> 
-  <h1>Modification de la monnaie</h1>
-  <br> <br>
-  <p class="taux">Saisir le code de la monnaie</p>
-  <input type="text" v-model="codeCurrency" placeholder="Code Currency">
-  <button @click="updateCurrency(this.id)">Enregistrer</button>
-  </center>
-</div>
+  <div class="pairclass">
+    <center>
+      <h1>Modification de la monnaie</h1>
+      <br />
+      <br />
+      <p class="taux">Saisir le code de la monnaie</p>
+      <input type="text" v-model="codeCurrency" placeholder="Code Currency" />
+      <button @click="updateCurrency(this.id)">Enregistrer</button>
+    </center>
+  </div>
 </template>
 
 
 
 <style>
-
 .pairclass {
   padding: 50px;
 }
@@ -143,5 +144,4 @@ button:hover {
 input {
   border-radius: 10px;
 }
-
 </style>
